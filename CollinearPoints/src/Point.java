@@ -56,7 +56,7 @@ public class Point implements Comparable<Point>{
 		}
 	}
 	
-	public Comparator<Point> slopOrder() {
+	public Comparator<Point> slopeOrder() {
 		return new Comparator<Point>() {
 			@Override
 			public int compare(Point p1, Point p2) {
