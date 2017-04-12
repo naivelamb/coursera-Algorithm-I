@@ -10,24 +10,25 @@ public class FastCollinearPoints {
 	
 	public FastCollinearPoints(Point[] points) {
 		checkRepeatedPoints(points);
+		Point[] pointsCopy = points.clone();
 		
 		for (Point startPoint: points) {
-			Arrays.sort(points, startPoint.slopeOrder());
-			double previousSlope = startPoint.slopeTo(startPoint);
+			Arrays.sort(pointsCopy, startPoint.slopeOrder());
+			double previousSlope = Double.NEGATIVE_INFINITY;
 			List<Point> slopePoints = new ArrayList<>();
 			for (int i = 1; i < points.length; i ++) {
-				double slope = startPoint.slopeTo(points[i]);
+				double slope = startPoint.slopeTo(pointsCopy[i]);
 				if (slope == previousSlope) {
-					slopePoints.add(points[i]);
+					slopePoints.add(pointsCopy[i]);
 				}
 				else {
 					if (slopePoints.size() >= 3) {
-						slopePoints.add(startPoint);
+						slopePoints.add(pointsCopy[0]);
 						Collections.sort(slopePoints);
 						addSegmentsIfNew(slopePoints.get(0), slopePoints.get(slopePoints.size() - 1));
 					}
 					slopePoints.clear();
-					slopePoints.add(points[i]);
+					slopePoints.add(pointsCopy[i]);
 				}
 				previousSlope = slope;
 			}
