@@ -16,6 +16,7 @@ public class FastCollinearPoints {
 			Arrays.sort(pointsCopy, startPoint.slopeOrder());
 			double previousSlope = Double.NEGATIVE_INFINITY;
 			List<Point> slopePoints = new ArrayList<>();
+			
 			for (int i = 1; i < points.length; i ++) {
 				double slope = startPoint.slopeTo(pointsCopy[i]);
 				if (slope == previousSlope) {
