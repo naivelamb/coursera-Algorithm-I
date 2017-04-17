@@ -1,21 +1,89 @@
+import java.util.LinkedList;
+
+import edu.princeton.cs.algs4.MinPQ;
+import edu.princeton.cs.algs4.Stack;
 
 public class Solver {
-	Board initial;
+	
+	private class Node implements Comparable<Node> {
+		private Node previous;
+		private Board board;
+		private int numMoves = 0;
+		
+		public Node(Board board) {
+			this.board = board;
+		}
+		
+		public Node(Board board, Node previous) {
+			this.board = board;
+			this.previous = previous;
+			this.numMoves = previous.numMoves + 1;
+		}
+
+		@Override
+		public int compareTo(Node node) {
+			return (this.board.manhattan() - node.board.manhattan()) + (this.numMoves - node.numMoves);
+		}
+		
+	}
+	
+	private Node lastNode;
 	
 	public Solver(Board initial) {
-		this.initial = initial;
+		if (initial == null) throw new java.lang.NullPointerException();
+		
+		MinPQ<Node> sols = new MinPQ<Node>();
+		sols.insert(new Node(initial));
+		
+		MinPQ<Node> twinSols = new MinPQ<Node>();
+		twinSols.insert(new Node(initial.twin()));
+		
+		while(true) {
+			lastNode = addNode(sols);
+			if (lastNode != null || addNode(twinSols) != null) return;
+		}
+	}
+	
+	private Node addNode(MinPQ<Node> sols) {
+		if (sols.isEmpty()) return null;
+		Node bestNode = sols.delMin();
+		
+		if (bestNode.board.isGoal()) return bestNode;
+		for (Board neighbor: bestNode.board.neighbors()) {
+			if (bestNode.previous == null || !neighbor.equals(bestNode.previous.board)) {
+				sols.insert(new Node(neighbor, bestNode));
+			}
+		}
+		return null;
 	}
 	
 	public boolean isSolvable() {
-		return false;
+		return (lastNode != null);
 	}
 	
 	public int moves() {
-		return 0;
+		return isSolvable()? lastNode.numMoves: -1;
 	}
 	
 	public Iterable<Board> solution() {
-		return null;
+		if(!isSolvable()) return null;
+		
+		LinkedList<Board> sol = new LinkedList<Board>();
+		Node lastNode_res = this.lastNode;
+		while(lastNode_res != null) {
+			sol.add(lastNode_res.board);
+			lastNode_res = lastNode_res.previous;
+		}
+		
+		/*
+		Stack<Board> sol = new Stack<Board>();
+		while(lastNode != null) {
+			sol.push(lastNode.board);
+			lastNode = lastNode.previous;
+		}
+		*/
+		
+		return sol;
 	}
 	
 	public static void main(String[] args) {
