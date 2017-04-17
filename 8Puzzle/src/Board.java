@@ -57,42 +57,19 @@ public class Board {
 	}
 	
 	public Board twin() {
-		int [] space = spaceIdx();
-		int row = space[0];
-		int col = space[1];
-		if (space[0] == 0) {
-			row = space[0] + 1;
-			if (space[1] != this.dimension() - 1) {
-				return swap(row, col, row, col + 1);
+		for (int i = 0; i < this.dimension(); i ++) {
+			for (int j = 0; j < this.dimension() - 1 ; j ++) {
+				if (!isSpace(i, j) && !isSpace(i, j + 1)) return swap(i, j, i, j + 1);
 			}
-			else return swap(row, col, row, col - 1);
 		}
-		if (space[0] == this.dimension() - 1) {
-			row = space[0] - 1;
-			if (space[1] != this.dimension() - 1) {
-				return swap(row, col, row, col + 1);
-			}
-			else return swap(row, col, row, col - 1);
-		}
-		if (space[1] == 0) {
-			col = space[1] + 1;
-			if (space[0] != this.dimension() - 1) {
-				return swap(row + 1, col, row, col);
-			}
-			return swap(row - 1, col, row, col);
-		}
-		if (space[1] == this.dimension() - 1) {
-			col = space[1] - 1;
-			if (space[0] != this.dimension() - 1) {
-				return swap(row - 1, col, row, col);
-			}
-			return swap(row + 1, col, row, col);
-		}
-		return swap(row + 1, col, row + 1, col + 1);
+		throw new RuntimeException();
 	}
 	
 	private boolean isSpace(int i, int j) {
 		int[] space = spaceIdx();
+		if (i < this.dimension() && j < this.dimension()) {
+			return (space[0] == i && space[1] == j);
+		}
 		return false;
 	}
 	
