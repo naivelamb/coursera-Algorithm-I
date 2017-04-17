@@ -67,21 +67,13 @@ public class Solver {
 	
 	public Iterable<Board> solution() {
 		if(!isSolvable()) return null;
-		
-		LinkedList<Board> sol = new LinkedList<Board>();
-		Node lastNode_res = this.lastNode;
-		while(lastNode_res != null) {
-			sol.add(lastNode_res.board);
-			lastNode_res = lastNode_res.previous;
-		}
-		
-		/*
+				
 		Stack<Board> sol = new Stack<Board>();
-		while(lastNode != null) {
-			sol.push(lastNode.board);
-			lastNode = lastNode.previous;
+		Node lastNode_sol = lastNode;
+		while(lastNode_sol != null) {
+			sol.push(lastNode_sol.board);
+			lastNode_sol = lastNode_sol.previous;
 		}
-		*/
 		
 		return sol;
 	}
