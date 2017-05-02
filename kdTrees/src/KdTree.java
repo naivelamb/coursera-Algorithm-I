@@ -63,11 +63,11 @@ public class KdTree {
 			double cmp = p.y() - x.p.y();
 			if (cmp < 0) { //p on the top
 				x.lb = insert(x.lb, p, !orientation,
-						x.rect.xmin(), x.p.y(), x.rect.xmax(), x.rect.ymax());
+						x.rect.xmin(), x.rect.ymin(), x.rect.xmax(), x.p.y());
 			}
 			else { //p on the bottom
 				x.rt = insert(x.rt, p, !orientation,
-						x.rect.xmin(), x.rect.ymin(), x.rect.xmax(), x.p.y());
+						x.rect.xmin(), x.p.y(), x.rect.xmax(), x.rect.ymax());
 			}
 		}
 		return x;
